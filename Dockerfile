@@ -412,10 +412,10 @@ RUN wget -O usr/local/sbin/cgroupfs-mount "https://github.com/tianon/cgroupfs-mo
 	chmod +x usr/local/sbin/cgroupfs-mount; \
 	tcl-chroot cgroupfs-mount
 
-ENV DOCKER_VERSION 19.03.6
+ENV DOCKER_VERSION 20.10.9
 
 # Get the Docker binaries with version that matches our boot2docker version.
-RUN DOCKER_CHANNEL='edge'; \
+RUN DOCKER_CHANNEL='stable'; \
 	case "$DOCKER_VERSION" in \
 # all the pre-releases go in the "test" channel
 		*-rc* | *-beta* | *-tp* ) DOCKER_CHANNEL='test' ;; \
@@ -424,9 +424,6 @@ RUN DOCKER_CHANNEL='edge'; \
 	wget -O /docker.tgz "https://download.docker.com/linux/static/$DOCKER_CHANNEL/x86_64/docker-$DOCKER_VERSION.tgz"; \
 	tar -zxvf /docker.tgz -C "usr/local/bin" --strip-components=1; \
 	rm /docker.tgz; \
-	\
-# download bash-completion too
-	wget -O usr/local/share/bash-completion/completions/docker "https://github.com/docker/docker-ce/raw/v${DOCKER_VERSION}/components/cli/contrib/completion/bash/docker"; \
 	\
 	for binary in \
 		containerd \
